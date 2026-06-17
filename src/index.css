@@ -192,3 +192,61 @@ input:focus, select:focus, textarea:focus {
   .text-3xs { font-size: 0.55rem; line-height: 0.8rem; }
   .perspective-1000 { perspective: 1000px; }
 }
+
+/* ─── Hero Background Animations ───────────────────────────────── */
+.hero-bg-zoom {
+  background-image: url('/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  animation: ken-burns 40s ease-in-out infinite alternate;
+}
+
+@keyframes ken-burns {
+  0% {
+    transform: scale(1.0) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.08) translate(-1%, 0.5%);
+  }
+  100% {
+    transform: scale(1.02) translate(0.5%, -0.5%);
+  }
+}
+
+.flight-pulse-1 {
+  animation: flight-move-1 8s linear infinite;
+}
+.flight-pulse-2 {
+  animation: flight-move-2 10s linear infinite;
+}
+.flight-pulse-3 {
+  animation: flight-move-3 7s linear infinite;
+}
+.flight-pulse-4 {
+  animation: flight-move-4 12s linear infinite;
+}
+
+@keyframes flight-move-1 {
+  0% { stroke-dashoffset: 330; }
+  100% { stroke-dashoffset: -1320; }
+}
+@keyframes flight-move-2 {
+  0% { stroke-dashoffset: 264; }
+  100% { stroke-dashoffset: -1056; }
+}
+@keyframes flight-move-3 {
+  0% { stroke-dashoffset: 220; }
+  100% { stroke-dashoffset: -880; }
+}
+@keyframes flight-move-4 {
+  0% { stroke-dashoffset: 198; }
+  100% { stroke-dashoffset: -792; }
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.8) 100%);
+}

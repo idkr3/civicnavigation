@@ -493,17 +493,94 @@ function Home({ lang, setLang, trackReferral }) {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
       {/* Hero Section */}
       <div className="relative h-screen min-h-[800px] flex flex-col">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4" type="video/mp4" />
-          </video>
+        {/* Animated Background */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+          <div className="hero-bg-zoom opacity-75" />
+          
+          {/* Animated Overlaying SVG Flight Paths */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-10" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.1" />
+                <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.1" />
+              </linearGradient>
+              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            
+            <path
+              d="M 150,300 Q 500,50 850,300"
+              fill="none"
+              stroke="url(#arcGrad)"
+              strokeWidth="2.5"
+              filter="url(#glow)"
+            />
+            <path
+              d="M 150,300 Q 500,50 850,300"
+              fill="none"
+              stroke="#60a5fa"
+              strokeWidth="4"
+              strokeDasharray="15, 150"
+              className="flight-pulse-1"
+            />
+
+            <path
+              d="M 250,450 Q 500,200 750,450"
+              fill="none"
+              stroke="url(#arcGrad)"
+              strokeWidth="2"
+              filter="url(#glow)"
+            />
+            <path
+              d="M 250,450 Q 500,200 750,450"
+              fill="none"
+              stroke="#93c5fd"
+              strokeWidth="3.5"
+              strokeDasharray="12, 120"
+              className="flight-pulse-2"
+            />
+
+            <path
+              d="M 100,200 Q 400,-50 700,250"
+              fill="none"
+              stroke="url(#arcGrad)"
+              strokeWidth="2"
+              filter="url(#glow)"
+            />
+            <path
+              d="M 100,200 Q 400,-50 700,250"
+              fill="none"
+              stroke="#60a5fa"
+              strokeWidth="3.5"
+              strokeDasharray="10, 100"
+              className="flight-pulse-3"
+            />
+
+            <path
+              d="M 300,100 Q 600,350 900,150"
+              fill="none"
+              stroke="url(#arcGrad)"
+              strokeWidth="2"
+              filter="url(#glow)"
+            />
+            <path
+              d="M 300,100 Q 600,350 900,150"
+              fill="none"
+              stroke="#93c5fd"
+              strokeWidth="3"
+              strokeDasharray="8, 90"
+              className="flight-pulse-4"
+            />
+          </svg>
+          
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/70 z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-radial-gradient z-10 pointer-events-none" />
         </div>
 
         <div className="relative z-10 px-4 md:px-12 lg:px-16 flex-1 flex flex-col justify-end pb-8 md:pb-12 lg:pb-16 w-full">
@@ -647,43 +724,7 @@ function Home({ lang, setLang, trackReferral }) {
         </div>
       </div>
 
-      {/* Impact Tracker Section */}
-      <div className="relative py-28 overflow-hidden bg-black">
-        <AmbientOrbs variant="green" />
-        <div className="section-divider mb-20" />
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-            <div className="lg:col-span-5">
-              <p className="text-3xs uppercase tracking-widest text-gray-500 mb-3">Real Impact</p>
-              <h2 className="text-3xl md:text-4xl font-light gradient-text tracking-tight mb-6" style={{letterSpacing:'-0.03em'}}>Project Impact</h2>
-              <p className="text-gray-500 font-light leading-relaxed text-sm">
-                Fulshear Key Club is dedicated to building sustainable, multilingual navigation hubs. We track real-time portal operations to ensure no family is left behind due to language or systemic barriers.
-              </p>
-              <div className="mt-8 section-divider" />
-              <p className="text-3xs text-gray-600 uppercase tracking-widest mt-6">Verified April 2026 · Katy-Fulshear Metro Area</p>
-            </div>
-            <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {[
-                { val: impactMetrics.familiesServed, label: "Families Served", icon: 'Users' },
-                { val: impactMetrics.kitsDistributed, label: "Kits Distributed", icon: 'Briefcase' },
-                { val: impactMetrics.partnerOrganizations, label: "Partner Orgs", icon: 'Globe' },
-                { val: impactMetrics.languagesSupported, label: "Languages", icon: 'BookOpen' },
-                { val: impactMetrics.websiteVisits, label: "Website Visits", icon: 'Activity', colspan: true }
-              ].map((metric, idx) => (
-                <Scroll3D key={idx}>
-                  <div className={`glow-card shimmer liquid-glass border border-white/8 p-6 rounded-2xl text-center flex flex-col items-center gap-2 ${metric.colspan ? 'col-span-2 md:col-span-1' : ''}`}>
-                    <Icon name={metric.icon} className="w-4 h-4 text-gray-600 mb-1" />
-                    <div className="text-2xl md:text-3xl font-light text-white">
-                      <AnimatedCounter value={metric.val} />
-                    </div>
-                    <div className="text-3xs text-gray-600 uppercase tracking-widest">{metric.label}</div>
-                  </div>
-                </Scroll3D>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+
     </motion.div>
   );
 }
