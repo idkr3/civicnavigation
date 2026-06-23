@@ -44,6 +44,8 @@ import {
   impactMetrics, 
   chatbotAnswers 
 } from './data';
+import { tText } from './translationsDict';
+
 
 const iconMap = {
   Utensils: Utensils,
@@ -672,7 +674,7 @@ function Home({ lang, setLang, trackReferral }) {
           {[...categories, ...categories].map((cat, idx) => (
             <span key={idx} className="flex items-center gap-3 text-xs uppercase tracking-widest text-gray-500 whitespace-nowrap">
               <Icon name={cat.icon} className="w-3.5 h-3.5 text-gray-600" />
-              {cat.name}
+              {tText(cat.name, lang)}
               <span className="ml-4 text-gray-700">—</span>
             </span>
           ))}
@@ -687,7 +689,7 @@ function Home({ lang, setLang, trackReferral }) {
           <div className="mb-16">
             <p className="text-3xs uppercase tracking-widest text-gray-500 mb-3">Civic Resource Hub</p>
             <h2 className="text-3xl md:text-5xl font-light gradient-text tracking-tight mb-4" style={{letterSpacing:'-0.03em'}}>{t.needHelpBtn}</h2>
-            <p className="text-gray-500 max-w-2xl font-light text-base">Explore verified local organizations with full service details, documentation requirements, and eligibility information.</p>
+            <p className="text-gray-500 max-w-2xl font-light text-base">{tText("Explore verified local organizations with full service details, documentation requirements, and eligibility information.", lang)}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
@@ -708,8 +710,8 @@ function Home({ lang, setLang, trackReferral }) {
                     >
                       <Icon name={cat.icon} className="w-6 h-6 stroke-[1.3] text-white/70 group-hover:text-white transition-colors" />
                     </div>
-                    <h3 className="text-sm font-semibold text-white mb-2 tracking-wide">{cat.name}</h3>
-                    <p className="text-2xs text-gray-500 font-light leading-relaxed">{cat.desc}</p>
+                    <h3 className="text-sm font-semibold text-white mb-2 tracking-wide">{tText(cat.name, lang)}</h3>
+                    <p className="text-2xs text-gray-500 font-light leading-relaxed">{tText(cat.desc, lang)}</p>
                   </div>
                   <div className="flex items-center gap-2 text-2xs font-semibold text-gray-500 tracking-widest uppercase group-hover:text-white transition-all mt-2">
                     <span>{t.explore}</span>
@@ -730,7 +732,7 @@ function Home({ lang, setLang, trackReferral }) {
 }
 
 // Mobile collapsible filter bar (shown only on small screens in Directory)
-function MobileFilterBar({ searchQuery, onSearchChange, selectedCategory, onCategorySelect }) {
+function MobileFilterBar({ searchQuery, onSearchChange, selectedCategory, onCategorySelect, lang }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -742,7 +744,7 @@ function MobileFilterBar({ searchQuery, onSearchChange, selectedCategory, onCate
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search resources..."
+            placeholder={tText("Search resources...", lang)}
             className="w-full bg-black/60 border border-white/20 rounded-xl pl-9 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white transition-colors"
           />
           <Search className="w-4 h-4 text-gray-500 absolute left-3 top-3.5" />
@@ -752,7 +754,7 @@ function MobileFilterBar({ searchQuery, onSearchChange, selectedCategory, onCate
           className={`liquid-glass border px-4 rounded-xl text-xs font-medium transition-colors flex items-center gap-2 ${open ? 'border-white text-white bg-white/10' : 'border-white/20 text-gray-400'}`}
         >
           <BookOpen className="w-4 h-4" />
-          Filter
+          {tText("Filter By Category", lang)}
           <ChevronDown className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} />
         </button>
       </div>
@@ -772,7 +774,7 @@ function MobileFilterBar({ searchQuery, onSearchChange, selectedCategory, onCate
                 onClick={() => { onCategorySelect('all'); setOpen(false); }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition-all ${selectedCategory === 'all' ? 'bg-white text-black border-white font-medium' : 'border-white/20 text-gray-400 hover:border-white/40'}`}
               >
-                All
+                {tText("All Resources", lang)}
               </button>
               {categories.map(cat => (
                 <button
@@ -781,7 +783,7 @@ function MobileFilterBar({ searchQuery, onSearchChange, selectedCategory, onCate
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition-all ${selectedCategory === cat.id ? 'bg-white text-black border-white font-medium' : 'border-white/20 text-gray-400 hover:border-white/40'}`}
                 >
                   <Icon name={cat.icon} className="w-3 h-3" />
-                  {cat.name}
+                  {tText(cat.name, lang)}
                 </button>
               ))}
             </div>
@@ -857,6 +859,7 @@ function DirectoryPage({ lang, trackReferral }) {
           onSearchChange={handleSearchChange}
           selectedCategory={selectedCategory}
           onCategorySelect={handleCategorySelect}
+          lang={lang}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
@@ -864,13 +867,13 @@ function DirectoryPage({ lang, trackReferral }) {
           {/* Left Sidebar — desktop only */}
           <div className="hidden lg:flex lg:col-span-3 flex-col gap-6">
             <div className="liquid-glass border border-white/10 p-6 rounded-2xl">
-              <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase mb-4">Search Within Directory</h3>
+              <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase mb-4">{tText("Search Within Directory", lang)}</h3>
               <div className="relative">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  placeholder="Search by keywords..."
+                  placeholder={tText("Search by keywords...", lang)}
                   className="w-full bg-black/60 border border-white/20 rounded-lg pl-9 pr-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-white transition-colors"
                 />
                 <Search className="w-3.5 h-3.5 text-gray-500 absolute left-3 top-3.5" />
@@ -878,14 +881,14 @@ function DirectoryPage({ lang, trackReferral }) {
             </div>
 
             <div className="liquid-glass border border-white/10 p-6 rounded-2xl">
-              <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase mb-4">Filter By Category</h3>
+              <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase mb-4">{tText("Filter By Category", lang)}</h3>
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => handleCategorySelect('all')}
                   className={`text-left text-xs px-3 py-2 rounded-lg transition-all flex items-center gap-2 ${selectedCategory === 'all' ? 'bg-white text-black font-medium' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                 >
                   <BookOpen className="w-3.5 h-3.5" />
-                  All Resources
+                  {tText("All Resources", lang)}
                 </button>
                 {categories.map(cat => (
                   <button
@@ -894,7 +897,7 @@ function DirectoryPage({ lang, trackReferral }) {
                     className={`text-left text-xs px-3 py-2 rounded-lg transition-all flex items-center gap-2 ${selectedCategory === cat.id ? 'bg-white text-black font-medium' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                   >
                     <Icon name={cat.icon} className="w-3.5 h-3.5" />
-                    <span>{cat.name}</span>
+                    <span>{tText(cat.name, lang)}</span>
                   </button>
                 ))}
               </div>
@@ -910,12 +913,12 @@ function DirectoryPage({ lang, trackReferral }) {
             <div className="liquid-glass border border-white/20 p-6 rounded-2xl bg-white/5">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-white flex items-center gap-1.5 mb-2">
                 <Activity className="w-4 h-4 text-white" />
-                Category Checklist Scope
+                {tText("Category Checklist Scope", lang)}
               </h4>
-              <p className="text-sm text-gray-300 font-light leading-relaxed">{categoryBulletPoints[selectedCategory]}</p>
+              <p className="text-sm text-gray-300 font-light leading-relaxed">{tText(categoryBulletPoints[selectedCategory], lang)}</p>
               <div className="flex gap-4 mt-4">
                 <Link to="/guides" className="text-xs text-white underline hover:text-gray-300">
-                  Read related plain-language Step-by-Step guides →
+                  {tText("Read related plain-language Step-by-Step guides →", lang)}
                 </Link>
               </div>
             </div>
@@ -923,8 +926,8 @@ function DirectoryPage({ lang, trackReferral }) {
 
           {/* Listings count */}
           <div className="flex justify-between items-center text-xs text-gray-400 uppercase tracking-widest px-2">
-            <span>Verified Local Results</span>
-            <span>{filteredResources.length} items found</span>
+            <span>{tText("Verified Local Results", lang)}</span>
+            <span>{filteredResources.length} {tText("items found", lang)}</span>
           </div>
 
           {/* Directory List */}
@@ -936,32 +939,32 @@ function DirectoryPage({ lang, trackReferral }) {
                     
                     {/* Category Pill Tag */}
                     <div className="absolute top-6 right-6 text-3xs font-semibold tracking-widest uppercase border border-white/10 px-2 py-0.5 rounded text-gray-500">
-                      {categories.find(c => c.id === res.categoryId)?.name || res.categoryId}
+                      {tText(categories.find(c => c.id === res.categoryId)?.name || res.categoryId, lang)}
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-normal text-white mb-2">{res.name}</h3>
-                      <p className="text-sm text-gray-300 font-light leading-relaxed mb-4">{res.description}</p>
+                      <h3 className="text-2xl font-normal text-white mb-2">{tText(res.name, lang)}</h3>
+                      <p className="text-sm text-gray-300 font-light leading-relaxed mb-4">{tText(res.description, lang)}</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 border-t border-white/5 pt-6 text-xs text-gray-400">
                       <div className="flex flex-col gap-2">
-                        <div className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.hoursText}:</strong> {res.hours}</span></div>
-                        <div className="flex items-center gap-2"><Globe className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.languagesText}:</strong> {res.languages.join(', ')}</span></div>
-                        <div className="flex items-center gap-2"><DollarSign className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.costText}:</strong> {res.cost}</span></div>
-                        <div className="flex items-center gap-2"><Bus className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.transportText}:</strong> {res.transit}</span></div>
+                        <div className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.hoursText}:</strong> {tText(res.hours, lang)}</span></div>
+                        <div className="flex items-center gap-2"><Globe className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.languagesText}:</strong> {res.languages.map(l => tText(l, lang)).join(', ')}</span></div>
+                        <div className="flex items-center gap-2"><DollarSign className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.costText}:</strong> {tText(res.cost, lang)}</span></div>
+                        <div className="flex items-center gap-2"><Bus className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.transportText}:</strong> {tText(res.transit, lang)}</span></div>
                       </div>
                       
                       <div className="flex flex-col gap-2">
-                        <div className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.eligibilityText}:</strong> {res.eligibility}</span></div>
-                        <div className="flex items-center gap-2"><Info className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.documentsText}:</strong> {res.documentsRequired}</span></div>
-                        <div className="flex items-center gap-2"><User className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.contactText}:</strong> {res.contactPerson}</span></div>
-                        <div className="flex items-center gap-2"><Activity className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">Services:</strong> {res.servicesOffered}</span></div>
+                        <div className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.eligibilityText}:</strong> {tText(res.eligibility, lang)}</span></div>
+                        <div className="flex items-center gap-2"><Info className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.documentsText}:</strong> {tText(res.documentsRequired, lang)}</span></div>
+                        <div className="flex items-center gap-2"><User className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{t.contactText}:</strong> {tText(res.contactPerson, lang)}</span></div>
+                        <div className="flex items-center gap-2"><Activity className="w-3.5 h-3.5 text-gray-500" /> <span><strong className="text-white uppercase tracking-widest text-3xs">{tText("Services", lang)}:</strong> {tText(res.servicesOffered, lang)}</span></div>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap gap-4 border-t border-white/5 pt-6 items-center justify-between">
-                      <div className="text-3xs text-gray-600 uppercase tracking-widest">Verified by Key Club outreach • Last Checked April 2026</div>
+                      <div className="text-3xs text-gray-600 uppercase tracking-widest">{tText("Verified by Key Club outreach • Last Checked April 2026", lang)}</div>
                       <div className="flex gap-4">
                         {res.website && (
                           <a 
@@ -972,7 +975,7 @@ function DirectoryPage({ lang, trackReferral }) {
                             className="bg-white text-black text-xs px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center gap-1.5"
                           >
                             <Globe className="w-3.5 h-3.5" />
-                            Visit Website
+                            {tText("Visit Website", lang)}
                           </a>
                         )}
                         {res.phone && (
@@ -982,7 +985,7 @@ function DirectoryPage({ lang, trackReferral }) {
                             className="border border-white/20 text-white text-xs px-4 py-2 rounded-lg hover:bg-white/5 transition-all flex items-center gap-1.5"
                           >
                             <Phone className="w-3.5 h-3.5" />
-                            Call {res.phone}
+                            {tText("Call", lang)} {res.phone}
                           </a>
                         )}
                       </div>
@@ -994,7 +997,7 @@ function DirectoryPage({ lang, trackReferral }) {
             </div>
           ) : (
             <div className="liquid-glass border border-white/10 p-12 rounded-2xl text-center text-gray-500">
-              No matching verified local organizations found. Try expanding your search queries.
+              {tText("No matching verified local organizations found. Try expanding your search queries.", lang)}
             </div>
           )}
 
@@ -1027,7 +1030,7 @@ function GuidesPage({ lang }) {
         <div className="mb-10 max-w-md relative">
           <input
             type="text"
-            placeholder="Search guides (e.g. SNAP, enroll, transport)..."
+            placeholder={tText("Search guides (e.g. SNAP, enroll, transport)...", lang)}
             value={guideSearch}
             onChange={(e) => setGuideSearch(e.target.value)}
             className="w-full bg-black/60 border border-white/20 rounded-lg pl-10 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white transition-colors"
@@ -1051,8 +1054,8 @@ function GuidesPage({ lang }) {
                       <Icon name={guide.icon} className={`w-6 h-6 ${activeGuide === guide.id ? 'text-black' : 'text-white'}`} />
                     </span>
                     <div>
-                      <h4 className="font-medium text-sm">{guide.title}</h4>
-                      <p className={`text-2xs font-light mt-1 ${activeGuide === guide.id ? 'text-black/80' : 'text-gray-400'}`}>{guide.summary.slice(0, 75)}...</p>
+                      <h4 className="font-medium text-sm">{tText(guide.title, lang)}</h4>
+                      <p className={`text-2xs font-light mt-1 ${activeGuide === guide.id ? 'text-black/80' : 'text-gray-400'}`}>{tText(guide.summary, lang).slice(0, 75)}...</p>
                     </div>
                   </div>
                   <ChevronRight className={`w-4 h-4 transition-transform ${activeGuide === guide.id ? 'rotate-90' : ''}`} />
@@ -1071,12 +1074,12 @@ function GuidesPage({ lang }) {
                     <div className="flex items-center gap-4 border-b border-white/10 pb-4">
                       <Icon name={guide.icon} className="w-10 h-10 text-white stroke-[1.2]" />
                       <div>
-                        <h3 className="text-2xl font-normal text-white">{guide.title}</h3>
-                        <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider">{categories.find(c => c.id === guide.target)?.name || guide.target}</p>
+                        <h3 className="text-2xl font-normal text-white">{tText(guide.title, lang)}</h3>
+                        <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider">{tText(categories.find(c => c.id === guide.target)?.name || guide.target, lang)}</p>
                       </div>
                     </div>
 
-                    <p className="text-sm text-gray-300 font-light leading-relaxed">{guide.summary}</p>
+                    <p className="text-sm text-gray-300 font-light leading-relaxed">{tText(guide.summary, lang)}</p>
 
                     {/* Step-by-step numbers */}
                     <div className="flex flex-col gap-4">
@@ -1086,8 +1089,8 @@ function GuidesPage({ lang }) {
                             {step.num}
                           </div>
                           <div>
-                            <h5 className="text-sm font-semibold text-white mb-1">{step.title}</h5>
-                            <p className="text-xs text-gray-400 leading-relaxed font-light">{step.text}</p>
+                            <h5 className="text-sm font-semibold text-white mb-1">{tText(step.title, lang)}</h5>
+                            <p className="text-xs text-gray-400 leading-relaxed font-light">{tText(step.text, lang)}</p>
                           </div>
                         </div>
                       ))}
@@ -1095,12 +1098,12 @@ function GuidesPage({ lang }) {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-white/10 pt-6 text-xs font-light text-gray-400">
                       <div>
-                        <strong className="text-white block uppercase tracking-widest text-3xs mb-2">Required Paperwork</strong>
-                        <p className="leading-relaxed">{guide.documentsNeeded}</p>
+                        <strong className="text-white block uppercase tracking-widest text-3xs mb-2">{tText("Required Paperwork", lang)}</strong>
+                        <p className="leading-relaxed">{tText(guide.documentsNeeded, lang)}</p>
                       </div>
                       <div>
-                        <strong className="text-white block uppercase tracking-widest text-3xs mb-2">General Eligibility</strong>
-                        <p className="leading-relaxed">{guide.eligibility}</p>
+                        <strong className="text-white block uppercase tracking-widest text-3xs mb-2">{tText("General Eligibility", lang)}</strong>
+                        <p className="leading-relaxed">{tText(guide.eligibility, lang)}</p>
                       </div>
                     </div>
 
@@ -1108,7 +1111,7 @@ function GuidesPage({ lang }) {
                       <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-xl text-xs text-red-200 flex items-start gap-2">
                         <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                         <div>
-                          <strong>Safety Advisory:</strong> {guide.safetyNote}
+                          <strong>{tText("Safety Advisory:", lang)}</strong> {tText(guide.safetyNote, lang)}
                         </div>
                       </div>
                     )}
@@ -1118,7 +1121,7 @@ function GuidesPage({ lang }) {
             ) : (
               <div className="liquid-glass border border-white/10 p-12 rounded-2xl text-center text-gray-500 h-full flex flex-col justify-center items-center">
                 <Info className="w-10 h-10 text-gray-500 mb-4" />
-                <p>Select a plain-language guide from the list to view step-by-step instructions, documentation requirements, and safety policies.</p>
+                <p>{tText("Select a plain-language guide from the list to view step-by-step instructions, documentation requirements, and safety policies.", lang)}</p>
               </div>
             )}
           </div>
@@ -1144,13 +1147,13 @@ function PartnersPage({ lang }) {
               <div className="liquid-glass border border-white/10 p-6 rounded-2xl flex flex-col justify-between hover:border-white/20 transition-all h-full">
                 <div>
                   <span className="text-3xs font-semibold tracking-widest uppercase border border-white/10 px-2 py-0.5 rounded text-gray-500 inline-block mb-4">
-                    {partner.type}
+                    {tText(partner.type, lang)}
                   </span>
-                  <h3 className="text-lg font-medium text-white mb-2">{partner.name}</h3>
-                  <p className="text-xs text-gray-400 font-light leading-relaxed">{partner.services}</p>
+                  <h3 className="text-lg font-medium text-white mb-2">{tText(partner.name, lang)}</h3>
+                  <p className="text-xs text-gray-400 font-light leading-relaxed">{tText(partner.services, lang)}</p>
                 </div>
                 <div className="mt-8 pt-4 border-t border-white/5 text-3xs text-gray-600 uppercase tracking-widest">
-                  Resource Kit Distribution Partner
+                  {tText("Resource Kit Distribution Partner", lang)}
                 </div>
               </div>
             </Scroll3D>
@@ -1203,25 +1206,25 @@ function VolunteerPage({ lang }) {
         {/* Volunteer Form */}
         <div className="lg:col-span-7">
           <div className="liquid-glass border border-white/10 p-8 rounded-2xl">
-            <h3 className="text-xl font-normal text-white mb-6">Key Club Member Sign-Up</h3>
+            <h3 className="text-xl font-normal text-white mb-6">{tText("Key Club Member Sign-Up", lang)}</h3>
             
             {success ? (
               <div className="bg-emerald-500/10 border border-emerald-500/30 p-6 rounded-xl text-center">
                 <Check className="w-10 h-10 text-emerald-400 mx-auto mb-4" />
-                <h4 className="text-lg font-semibold text-white mt-2">Registration Submitted!</h4>
-                <p className="text-xs text-gray-400 mt-1">Thank you for volunteering. We will connect you to outreach coordinators soon.</p>
+                <h4 className="text-lg font-semibold text-white mt-2">{tText("Registration Submitted!", lang)}</h4>
+                <p className="text-xs text-gray-400 mt-1">{tText("Thank you for volunteering. We will connect you to outreach coordinators soon.", lang)}</p>
                 <button 
                   onClick={() => { setSuccess(false); setFormData({name:'', email:'', year:'2027', school:'Fulshear High School', interests:[]}); }} 
                   className="mt-4 text-xs text-white underline hover:text-gray-300"
                 >
-                  Submit another entry
+                  {tText("Submit another entry", lang)}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">Full Name</label>
+                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">{tText("Full Name", lang)}</label>
                     <input
                       type="text"
                       required
@@ -1232,7 +1235,7 @@ function VolunteerPage({ lang }) {
                     />
                   </div>
                   <div>
-                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">Email Address</label>
+                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">{tText("Email Address", lang)}</label>
                     <input
                       type="email"
                       required
@@ -1246,20 +1249,20 @@ function VolunteerPage({ lang }) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">Graduation Year</label>
+                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">{tText("Graduation Year", lang)}</label>
                     <select
                       value={formData.year}
                       onChange={(e) => setFormData({...formData, year: e.target.value})}
                       className="w-full bg-black/60 border border-white/20 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white transition-colors"
                     >
-                      <option value="2026">2026 (Senior)</option>
-                      <option value="2027">2027 (Junior)</option>
-                      <option value="2028">2028 (Sophomore)</option>
-                      <option value="2029">2029 (Freshman)</option>
+                      <option value="2026">{tText("2026 (Senior)", lang)}</option>
+                      <option value="2027">{tText("2027 (Junior)", lang)}</option>
+                      <option value="2028">{tText("2028 (Sophomore)", lang)}</option>
+                      <option value="2029">{tText("2029 (Freshman)", lang)}</option>
                     </select>
                   </div>
                   <div>
-                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">School</label>
+                    <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-1">{tText("School", lang)}</label>
                     <input
                       type="text"
                       value={formData.school}
@@ -1270,7 +1273,7 @@ function VolunteerPage({ lang }) {
                 </div>
 
                 <div>
-                  <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-3">Volunteer Interests</label>
+                  <label className="text-3xs uppercase tracking-widest text-gray-400 block mb-3">{tText("Volunteer Interests", lang)}</label>
                   <div className="flex flex-col gap-2">
                     {[
                       { id: 'translate', label: 'Translation Opportunities (Spanish, Arabic, Vietnamese, Mandarin, Urdu, Hindi)' },
@@ -1284,7 +1287,7 @@ function VolunteerPage({ lang }) {
                         onClick={() => handleInterestChange(item.id)}
                         className={`text-left text-xs px-4 py-3 rounded-lg border transition-all flex items-center justify-between ${formData.interests.includes(item.id) ? 'bg-white text-black border-white font-medium' : 'border-white/10 text-gray-400 hover:border-white/20 hover:bg-white/5'}`}
                       >
-                        <span>{item.label}</span>
+                        <span>{tText(item.label, lang)}</span>
                         <span>{formData.interests.includes(item.id) ? '✓' : '+'}</span>
                       </button>
                     ))}
@@ -1296,7 +1299,7 @@ function VolunteerPage({ lang }) {
                   disabled={submitting}
                   className="bg-white text-black px-6 py-3 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors w-full mt-4"
                 >
-                  {submitting ? 'Registering...' : 'Register as Volunteer'}
+                  {submitting ? tText("Registering...", lang) : tText("Register as Volunteer", lang)}
                 </button>
               </form>
             )}
@@ -1314,9 +1317,9 @@ function VolunteerPage({ lang }) {
               <div className="liquid-glass border border-white/10 p-6 rounded-2xl">
                 <h4 className="text-sm font-semibold text-white flex items-center gap-1.5 mb-2">
                   <Activity className="w-4 h-4 text-white" />
-                  {op.title}
+                  {tText(op.title, lang)}
                 </h4>
-                <p className="text-xs text-gray-400 leading-relaxed font-light">{op.text}</p>
+                <p className="text-xs text-gray-400 leading-relaxed font-light">{tText(op.text, lang)}</p>
               </div>
             </Scroll3D>
           ))}
